@@ -1,0 +1,59 @@
+.welcome {
+    width: 60%;
+    height: 40%;
+    margin: auto;
+}
+
+.welcome > .mdl-card__title {
+    color: #fff;
+    height: 400px;
+    background: url('http://api.mtyqx.cn/tapi/random.php') center/cover;
+}
+
+.page-content {
+    padding: 55px;
+}
+
+.demo-card-wide {
+    height: 600px;
+    position: relative;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.demo-card-wide .card-cover {
+    width: auto;
+    height: 440px;
+}
+
+.demo-card-wide .card-title-text {
+    align-self: center;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.demo-card-wide .card-intro-text {
+    height: 100px;
+    font-size: 12px;
+    font-family: serif;
+    padding: 5px 15px;
+}
+
+.demo-card-wide .mdl-card__actions {
+    background: white;
+    text-align: right;
+}
+
+#player {
+    width: 800px;
+    margin: 30px auto;
+}
+
+.mdl-dialog__content .mdl-dialog__title {
+    color: #5C34A4;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}

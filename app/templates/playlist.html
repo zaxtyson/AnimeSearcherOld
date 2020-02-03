@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+    <div style="text-align: center">
+        <div id="player"></div>
+        <div>
+            {% for video in video_list %}
+                <button type="button" class="mdl-chip mdl-button--raised mdl-button--accent"
+                        onclick="playVideo('{{ video.hash }}', '{{ video.type }}')">
+                    <span class="mdl-chip__text">{{ video.name }}</span>
+                </button>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

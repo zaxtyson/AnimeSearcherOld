@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Anime Searcher</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href=" {{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/flv.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/hls.js') }}"></script>
+    <link href="{{ url_for('static', filename='css/DPlayer.min.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/DPlayer.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="{{ url_for('static', filename='css/material.deep_purple-pink.min.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/material.min.js') }}"></script>
+</head>
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <span class="mdl-layout-title">Anime Searcher</span>
+            <div class="mdl-layout-spacer"></div>
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+                  mdl-textfield--floating-label mdl-textfield--align-right">
+                <label id="screen_status" class="mdl-button mdl-js-button mdl-button--icon" onclick="openFullscreen()">
+                    <i class="material-icons">fullscreen</i>
+                </label>
+                <div class="mdl-layout-spacer"></div>
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="input">
+                    <i class="material-icons">search</i>
+                </label>
+                <form class="mdl-textfield__expandable-holder" onsubmit="return getVideos(this.elements['keyword'].value)">
+                    <input type="text" name="keyword" class="mdl-textfield__input" id="input" required>
+                    <input type="submit" hidden>
+                </form>
+            </div>
+
+        </div>
+    </header>
+
+    <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">菜单</span>
+        <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="https://github.com/zaxtyson/AnimeSearcher" target="_blank">Github</a>
+            <a class="mdl-navigation__link" onclick="showAbout()">关于</a>
+        </nav>
+    </div>
+
+    <main class="mdl-layout__content">
+    <dialog id="search_loading" class="mdl-dialog" style="margin-top: 15%">
+        <div class="mdl-dialog__content">
+            <span class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></span>
+            <span style="margin-left: 20px"> 正在找,别着急啦 (*/ω＼*)</span>
+        </div>
+    </dialog>
+    <dialog id="about" class="mdl-dialog" style="width: 400px">
+        <div class="mdl-dialog__content">
+            <p class="mdl-dialog__title">AnimeSearcher</p>
+            <hr>
+            <p style="font-weight: lighter;margin: 20px 10px 0 10px">
+                这是一个开源的本地动漫搜索工具，动漫资源来自互联网。本项目仅供交流学习使用，请勿储存和传播其中的任何视频资源。<br><br>
+                本工具支持扩展规则引擎，如果您想知道如何编写引擎，请查阅本项目的 Wiki 页面。
+                如果有任何意见或建议，请提 Issue 或者发邮件告诉我 (oﾟvﾟ)ノ<br><br>
+                Email : zaxtyson@foxmail.com<br>
+                Github: https://github.com/zaxtyson/AnimeSearcher
+            </p>
+        </div>
+        <div class="mdl-dialog__actions">
+            <button type="button" class="mdl-button close">我知道了</button>
+        </div>
+    </dialog>
+        <div class="page-content" id="page-content">
+            {% block  content %}
+            {% endblock %}
+        </div>
+    </main>
+</div>
+<script>
+
+</script>
+</html>

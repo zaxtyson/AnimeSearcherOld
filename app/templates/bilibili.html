@@ -1,0 +1,13 @@
+<script src="{{ url_for('static', filename='js/play.js') }}"></script>
+<div style="width: 80%;height: 720px">
+    <iframe id="player" src="//player.bilibili.com/player.html?aid=9698756&cid=16224328&page=1" scrolling="no"
+            border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="height: inherit"></iframe>
+</div>
+
+<div>
+    {% for video in videos %}
+        <button type="button" class="mdl-chip mdl-button--raised mdl-button--accent" onclick="playBilibili('{{ video['url'] }}')">
+            <span class="mdl-chip__text">{{ video['title'] }}</span>
+        </button>
+    {% endfor %}
+</div>

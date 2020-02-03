@@ -1,0 +1,18 @@
+{% if not result %}
+    <p>不好意思,啥也没搜到 /(ㄒoㄒ)/~~</p>
+{% endif %}
+
+{% for item in result %}
+    <div class="demo-card-wide mdl-card mdl-shadow--3dp">
+        <div class="card-cover"
+             style="background: url('{{ item.cover }}') center / cover"></div>
+        <div class="card-title-text">《{{ item.title }}》</div>
+        <div class="mdl-typography--text-center" style="font-size: small;color: #5C34A4">规则引擎: {{ item.engine }} <br>剧集 : {{ item.num }} / 分类 : {{ item.cat }}</div>
+        <hr>
+        <div class="card-intro-text">{{ item.desc[:120] + '...' }}</div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/playlist/{{ item.hash }}" target="_blank">查看剧集</a>
+        </div>
+    </div>
+{% endfor %}
+
