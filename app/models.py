@@ -2,6 +2,7 @@ from hashlib import md5
 import requests
 import re
 from flask import request, Response
+from lxml import etree
 
 
 class Video(object):
@@ -13,6 +14,9 @@ class Video(object):
         self.raw_url = raw_url  # 原始 URL
         self.hash = md5(raw_url.encode('utf-8')).hexdigest()  # URL 的 hash,用作数据库的 key
         self.handler = DefaultHandler if not handler else handler  # 该视频对应的 Handler,进一步处理视频
+
+        if type == "m3u8":
+            self.type = "hls"  # 播放器要求
 
     def __repr__(self):
         return f'<Video {self.name}>'
@@ -63,6 +67,47 @@ class VideoList(object):
         }
 
 
+class BaseEngine(object):
+    """基础引擎，提供了一些工具"""
+    _default_headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4033.0 Safari/537.36 Edg/81.0.403.1"
+    }
+
+    @staticmethod
+    def get(url, params=None, headers=None, encoding='utf-8', **kwargs):
+        """封装 get 请求方法,禁用 SSL 验证"""
+        if not headers:
+            headers = BaseEngine._default_headers
+        try:
+            ret = requests.get(url, params, headers=headers, verify=False, timeout=10, **kwargs)
+            ret.encoding = encoding
+            return ret
+        except requests.RequestException:
+            return None
+
+    @staticmethod
+    def post(url, data=None, headers=None, encoding='utf-8', **kwargs):
+        """"封装 post 方法"""
+        if not headers:
+            headers = BaseEngine._default_headers
+        try:
+            ret = requests.post(url, data, headers=headers, verify=False, timeout=10, **kwargs)
+            ret.encoding = encoding
+            return ret
+        except requests.RequestException:
+            return None
+
+    @staticmethod
+    def xpath(html, xpath):
+        """支持 xpath 方便处理网页"""
+        if not html:
+            return None
+        try:
+            return etree.HTML(html).xpath(xpath)
+        except etree.XPathError:
+            return None
+
+
 class DefaultHandler(object):
     """默认的视频处理器"""
 
@@ -71,7 +116,6 @@ class DefaultHandler(object):
         self.type = type  # 视频格式
         self._chunk_size = 1024 * 512  # 代理访问时每次读取的数据流大小 bytes
         self.proxy_headers = {}  # 代理访问使用的 header
-
 
     def get_real_url(self):
         """获取视频真实链接"""

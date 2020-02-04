@@ -1,4 +1,5 @@
-<h3 align="center">- AnimeSearcher -</h3>
+<p style="text-align: center"><img src="./logo.ico" width="200"></p>
+<h3 style="text-align: center">- AnimeSearcher -</h3>
 
 # 简介  
 - AnimeSearcher 是一款本地动漫搜索引擎，基于 Flask + DPlayer  

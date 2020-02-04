@@ -1,2 +1,2 @@
 class Config(object):
-    pass
+    Engines = []

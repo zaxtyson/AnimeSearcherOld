@@ -35,4 +35,5 @@ def get_playlist(list_hash):
 def get_video(video_hash):
     video = cachedb.get_video(video_hash)
     handler = video.handler(video.raw_url, video.type)
+    logger.info(f"请求 : {video.name} {video.type}")
     return handler.make_response()

@@ -29,8 +29,8 @@ function getPlayList(list_hash) {
     });
 }
 
-function playVideo(video_hash, type) {
-    console.log("播放视频 [" + type + "]: " + video_hash);
+function playVideo(video_hash, video_type) {
+    console.log("播放视频 [" + video_type + "]: " + video_hash);
     new DPlayer({
         container: document.getElementById('player'),
         screenshot: true,
@@ -39,7 +39,7 @@ function playVideo(video_hash, type) {
         audio: 100,
         video: {
             'url': '/video/' + video_hash,
-            'type': type
+            'type': video_type
         }
     });
 }
@@ -90,47 +90,4 @@ function exitFullScreen() {
     let screen_status = document.getElementById("screen_status");
     screen_status.onclick = openFullscreen;
     screen_status.firstElementChild.textContent = "fullscreen";
-}
-
-//  play bilibili video
-// function playBilibili(url) {
-//     let player = document.getElementById("player");
-//     player.setAttribute("src", url);
-// }
-
-function playBilibili() {
-    new DPlayer({
-        container: document.getElementById('player'),
-        screenshot: true,
-        hotkey: true,
-        preload: 'metadata',
-        video: {
-            // url : "/static/js/1.flv",
-        },
-        pluginOptions: {
-            flvjs: {
-                "type": "flv",
-                "duration": 1373161,
-                "segments": [
-                    {
-                        "duration": 333438,
-                        "filesize": 60369190,
-                        "url": "http://127.0.0.1:1234/static/js/1.flv"
-                    }, {
-                        "duration": 390828,
-                        "filesize": 75726439,
-                        "url": "http://127.0.0.1:1234/static/js/2.flv"
-                    }, {
-                        "duration": 434453,
-                        "filesize": 103453988,
-                        "url": "http://127.0.0.1:1234/static/js/3.flv"
-                    }, {
-                        "duration": 214442,
-                        "filesize": 44189200,
-                        "url": "http://127.0.0.1:1234/static/js/4.flv"
-                    }
-                ]
-            }
-        }
-    });
 }

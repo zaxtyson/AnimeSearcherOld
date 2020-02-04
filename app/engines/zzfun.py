@@ -1,10 +1,10 @@
 import requests
 from hashlib import md5
-from app.models import VideoList, Video, DefaultHandler
+from app.models import VideoList, Video, DefaultHandler, BaseEngine
 from app import logger
 
 
-class Engine(object):
+class Engine(BaseEngine):
 
     @staticmethod
     def search(name):
@@ -14,12 +14,12 @@ class Engine(object):
         search_api = 'http://111.230.89.165:8089/android/search'
         info_api = 'http://111.230.89.165:8089/android/video/list_ios'
 
-        req = requests.post(search_api, data={'userid': '', 'key': name})
+        req = Engine.post(search_api, data={'userid': '', 'key': name})
         if req.status_code != 200 or req.json().get('errorCode') != 0:
             return result
         video_id_list = [int(v['videoId']) for v in req.json().get('data')]  # 搜索结果: 视频 id
         for vid in video_id_list:
-            req = requests.get(info_api, params={'userid': '', 'videoId': vid})
+            req = Engine.get(info_api, {'userid': '', 'videoId': vid})
             if req.status_code != 200 or req.json().get('errorCode') != 0:
                 continue
             info = req.json().get('data')  # 视频详情信息
@@ -29,6 +29,7 @@ class Engine(object):
             video_list.cover = info['videoImg']
             video_list.desc = info['videoDoc'] or '视频简介弄丢了 (/▽＼)'
             video_list.cat = info['videoClass'].split('/')
+            logger.info(f"引擎 {__name__} 正在处理: {video_list.title}")
             for video in info['videoSets'][0]['list']:
                 name = f"第 {video['ji']} 集"
                 video_list.add(Video(name, raw_url=video['playid'], type='mp4', handler=PlayIdHandler))  # playid: xxx-x-x
