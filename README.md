@@ -1,6 +1,6 @@
-<p style="text-align: center"><img src="./logo.ico" width="200"></p>
-<h3 style="text-align: center">- AnimeSearcher -</h3>
-
+<p align="center"><img src="http://img03.sogoucdn.com/app/a/100520146/798A9149A43079106F96F2AE7F314779" width="200"></p>
+<h3 align="center">- AnimeSearcher -</h3>
+ 
 # 简介  
 - AnimeSearcher 是一款本地动漫搜索引擎，基于 Flask + DPlayer  
 
@@ -20,11 +20,11 @@
 
 # 演示
 
-![index.png](https://www.6000tu.com/images/2020/02/03/index.png)
+![index.png](http://img03.sogoucdn.com/app/a/100520146/332EEC17EBAAE98F698BA8822A36CC39)
 
-![search.png](https://www.6000tu.com/images/2020/02/03/search.png)
+![search.png](http://img04.sogoucdn.com/app/a/100520146/38D1C370026C5B3E0C44C9ACCAFE192D)
 
-![player.png](https://www.6000tu.com/images/2020/02/03/player.png)
+![player.png](http://img01.sogoucdn.com/app/a/100520146/22BD2AEA7D16A0045465AB2C0AD38D82)
 
 # 使用
 
