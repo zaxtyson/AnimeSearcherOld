@@ -12,7 +12,7 @@ def index():
 def search(name):
     logger.info(f"搜索 : {name}")
     result = Searcher.search(name)
-    cachedb.clear()  # 每次搜索前清空临时数据库
+    # cachedb.clear()  # 每次搜索前清空临时数据库
     result_json = []
     for video_list in result:
         cachedb.add_video_list(video_list)  # 保存结果到临时数据库

@@ -132,10 +132,8 @@ class DefaultHandler(object):
         self.set_proxy_headers()  # 请求数据前设置 headers
         if not byte_end:
             self.proxy_headers['Range'] = f'bytes={byte_start}-'
-            print(f"Client request : Rang {byte_start}-")
         else:
             self.proxy_headers['Range'] = f'bytes={byte_start}-{byte_end}'
-            print(f"Client request : Rang {byte_start}-{byte_end}")
         real_url = self.real_url if self.real_url else self.get_real_url()
         try:
 

@@ -30,7 +30,7 @@ function playVideo(video_hash) {
         async: false,
         url: "/video/" + video_hash + "/type",
         success: function (ret) {
-            console.log("视频类型检测: " + ret + ' -> ' + video_hash);
+            console.log("视频格式检测: " + ret + ' -> ' + video_hash);
             video_type = ret;
         }
     });
@@ -54,6 +54,8 @@ function playVideo(video_hash) {
 
     player.on("error", function () {
         console.log("视频加载失败 :(");
+        prompt("网页端无法播放该视频，请尝试离线播放(或使用支持 URL 播放的本地播放器播放), 视频格式: " + video_type,
+            "http://127.0.0.1:5000/video/" + video_hash + "/data");
         dialog.close();
     })
 
