@@ -1,11 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
     <div style="text-align: center">
+        <dialog id="video_loading" class="mdl-dialog" style="margin-top: 15%">
+            <div class="mdl-dialog__content">
+                <span class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></span>
+                <span style="margin-left: 20px"> 视频加载中(。・∀・)ノ</span>
+            </div>
+        </dialog>
         <div id="player"></div>
         <div>
             {% for video in video_list %}
                 <button type="button" class="mdl-chip mdl-button--raised mdl-button--accent"
-                        onclick="playVideo('{{ video.hash }}', '{{ video.type }}')">
+                        onclick="playVideo('{{ video.hash }}')">
                     <span class="mdl-chip__text">{{ video.name }}</span>
                 </button>
             {% endfor %}

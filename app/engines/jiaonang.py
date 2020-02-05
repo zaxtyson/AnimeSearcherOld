@@ -53,15 +53,10 @@ class Engine(BaseEngine):
                     is_rubbish_flag = True  # 嘀哩嘀哩已挂
 
                 name = f"第 {video['video_number']} 集"
-                video_type = 'mp4'
                 handler = None
-                if url.endswith('m3u8'):
-                    handler = M3U8Handler
-                    video_type = 'hls'  # m3u8 格式类型为 hls(播放器要求)
-                elif 'bilibili' in url:
+                if 'bilibili' in url:
                     handler = BilibiliHandler
-                    video_type = 'mp4'
-                video_list.add(Video(name, url, video_type, handler))
+                video_list.add(Video(name, url, handler))
             if not is_rubbish_flag:
                 result.append(video_list)
         return result
@@ -79,19 +74,19 @@ class Engine(BaseEngine):
         return result
 
 
-class M3U8Handler(DefaultHandler):
-
-    def make_response(self):
-        """处理 m3u8 视频文件
-        原地址得到的 m3u8 文件中，视频地址缺少域名，无法正常播放
-        """
-        logger.info(f"M3U8Handler 正在处理: {self.raw_url}")
-        _, data_iter = self.get_stream()
-        url_info = urlparse(self.raw_url)
-        domain = f"{url_info.scheme}://{url_info.hostname}/"
-        text = next(data_iter).decode('utf-8')  # 获取迭代器的数据, 一般 m3u8 文件不会有 512kb,一次就可以读取完成
-        text = re.sub(r'\n(\d+?.+?ts)', fr'\n{domain}\1', text)
-        return Response(text, status=200)
+# class M3U8Handler(DefaultHandler):
+#
+#     def make_response(self):
+#         """处理 m3u8 视频文件
+#         原地址得到的 m3u8 文件中，视频地址缺少域名，无法正常播放
+#         """
+#         logger.info(f"M3U8Handler 正在处理: {self.raw_url}")
+#         _, data_iter = self.get_stream()
+#         url_info = urlparse(self.raw_url)
+#         domain = f"{url_info.scheme}://{url_info.hostname}/"
+#         text = next(data_iter).decode('utf-8')  # 获取迭代器的数据, 一般 m3u8 文件不会有 512kb,一次就可以读取完成
+#         text = re.sub(r'\n(\d+?.+?ts)', fr'\n{domain}\1', text)
+#         return Response(text, status=200)
 
 
 class BilibiliHandler(DefaultHandler):

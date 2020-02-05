@@ -17,31 +17,47 @@ function getVideos(animeName) {
     return false;   // 禁止表单跳转
 }
 
-// 获取视频播放列表页面数据
-function getPlayList(list_hash) {
-    console.log("获取视频播放列表:" + list_hash);
+function playVideo(video_hash) {
+    let video_type = 'auto';
+    let dialog = document.getElementById("video_loading");
+    if (!dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+    dialog.showModal();
+
     $.ajax({
         type: "GET",
-        url: "/playlist/" + list_hash,
+        async: false,
+        url: "/video/" + video_hash + "/type",
         success: function (ret) {
-            document.getElementById("page-content").innerHTML = ret;
-        },
+            console.log("视频类型检测: " + ret + ' -> ' + video_hash);
+            video_type = ret;
+        }
     });
-}
 
-function playVideo(video_hash, video_type) {
-    console.log("播放视频 [" + video_type + "]: " + video_hash);
-    new DPlayer({
+    const player = new DPlayer({
         container: document.getElementById('player'),
         screenshot: true,
         preload: true,
         autoplay: true,
         audio: 100,
         video: {
-            'url': '/video/' + video_hash,
+            'url': '/video/' + video_hash + '/data',
             'type': video_type
         }
     });
+
+    player.on("loadeddata", function () {
+        console.log("视频加载成功~");
+        dialog.close();
+    });
+
+    player.on("error", function () {
+        console.log("视频加载失败 :(");
+        dialog.close();
+    })
+
+
 }
 
 // 关于页面

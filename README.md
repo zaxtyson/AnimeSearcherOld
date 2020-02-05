@@ -4,7 +4,7 @@
 # 简介  
 - AnimeSearcher 是一款本地动漫搜索引擎，基于 Flask + DPlayer  
 
-- 它支持添加规则引擎以拓展搜索结果(目前有 2 个引擎), 编写规范请查看 [Wiki](https://github.com/zaxtyson/AnimeSearcher/wiki)  
+- 它支持添加规则引擎以拓展搜索结果(目前有 3 个引擎), 编写规范请查看 [Wiki](https://github.com/zaxtyson/AnimeSearcher/wiki)  
 
 - 它允许您为每一个视频绑定 Handler，以解析更为复杂的请求
 
@@ -39,3 +39,9 @@ pip install -r requirement.txt
 ```
 127.0.0.1:5000
 ```
+
+# 引擎加载
+
+- 将引擎放在 `app/engines` 目录下，程序会自动加载
+- 如果想禁用某个引擎，在其文件名前加上双下划线 `__` 即可
+- 引擎 `sakura` 的资源质量不错，但是搜索速度很慢(无效资源太多)。默认 `禁用` 状态，如果需要请取消其下划线

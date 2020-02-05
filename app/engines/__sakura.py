@@ -1,4 +1,4 @@
-from app.models import Video, VideoList, BaseEngine
+from app.models import Video, VideoList, BaseEngine, DefaultHandler
 from app import logger
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -10,7 +10,7 @@ class Engine(BaseEngine):
     def search(name):
         result = []
         page = 1
-        while page < 3:
+        while page < 3:  # 资源太多就返回前 3 页
             has_next, ret = Engine.search_one_page(name, page)
             result += ret
             page += 1
@@ -83,22 +83,40 @@ class Engine(BaseEngine):
             logger.error(f"引擎 {__name__} 加载 js 失败: {js_url}")
             return result
 
-        json_content = re.search(r".+?(\[.+\]).+", ret.text).group(1)
-        json_content = eval(json_content)[0][1]  # ['第x集$url$flv', '第x集$url$flv', ...]
-        for video in json_content:
-            name, url, type = video.split('$')[:3]  # ['第x集', 'url', 'flv'], type 不一定是真正的视频格式
-            if type.lower() not in ['flv', 'm3u8', 'mp4']:  # type 不对，视频肯定有问题，丢弃
-                logger.warning(f"引擎 {__name__} 丢弃: {url}")
-                return []
-            if url.endswith('mp4'):
-                type = 'mp4'
-            elif url.endswith('m3u8'):
-                type = 'm3u8'
-            result.append(Video(name, url, type))
+        source_list = re.search(r".+?(\[.+\]).+", ret.text).group(1)  # 一个二维列表，[ ['名称', [地址列表]], ...]
+        source_list = [i[1] for i in eval(source_list)]  # [['第x集$url$flv', '第x集$url$flv', ...], [...], ...]
+        # 一部动漫通常有多个来源，但是一些源可能是无效的(甚至全部无效)，我们获取第一个有效的源即可
+        ret = {}
+        for source in source_list:
+            for item in source:
+                name, url, _type = item.split('$')[:3]
+                if _type in ['flv', 'mp4', 'm3u8', 'zw'] \
+                        and 'jiningwanjun' not in url:  # 此时这些资源才是有效的
+                    ret.setdefault(name, url)
+                    if 'gss3.baidu.com' in url:
+                        ret[name] = url  # 优质资源,优先使用
+
+        ret = sorted(ret.items())  # [('name', 'url'), ...]
+        result = [Video(n, u, VideoHandler) for n, u in ret]
+        # for v in result:
+        #     print(v.name, v.raw_url)
         return result
 
 
-if __name__ == '__main__':
-    r = Engine.search("异世界")
-    for vl in r:
-        print(vl.title, vl.num, vl.videos[0].json(), vl.videos[0].raw_url)
+class VideoHandler(DefaultHandler):
+    def _get_real_url(self):
+        ret = Engine.get(self.raw_url)
+        if not ret or ret.status_code != 200:
+            logger.error(f"{__name__} 处理失败: {self.raw_url}")
+            return self.raw_url
+        ret = re.search(r"url:\s*'(http.+?)',", ret.text)
+        if not ret:
+            logger.error(f"{__name__} 处理失败: {self.raw_url}")
+        return ret.group(1)  # 真正的直链(m3u8)
+
+    def get_real_url(self):
+        # https://ck-qq.com/v/ZyB3mLew 这类视频需要进一步提取链接
+        if '-qq.com' in self.raw_url:
+            return self._get_real_url()
+        else:
+            return self.raw_url

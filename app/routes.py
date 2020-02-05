@@ -31,9 +31,24 @@ def get_playlist(list_hash):
     return render_template('playlist.html', video_list=video_list_json)
 
 
-@app.route('/video/<video_hash>')
-def get_video(video_hash):
+@app.route('/video/<video_hash>/type')
+def get_video_type(video_hash):
+    """获取视频格式"""
     video = cachedb.get_video(video_hash)
-    handler = video.handler(video.raw_url, video.type)
-    logger.info(f"请求 : {video.name} {video.type}")
+    handler = video.handler(video)
+    if not video.has_handled:   # 如果 Handler 还没有处理过
+        video.real_url = handler.get_real_url()     # 获取真实链接
+        handler.real_url = video.real_url   # 告知 handler 视频的真实链接,减少下面再重复获取一次
+        video.type = handler.detect_video_type()    # 推断视频格式
+        cachedb.update_video(video)     # 更新视频信息
+        video.has_handled = True
+        logger.info(f"视频信息处理完成: {video.name} [{video.type}] -> {video.real_url}")
+    return video.type
+
+
+@app.route('/video/<video_hash>/data')
+def get_video_data(video_hash):
+    """获取视频数据"""
+    video = cachedb.get_video(video_hash)
+    handler = video.handler(video)
     return handler.make_response()

@@ -22,6 +22,10 @@ class CacheDB(object):
         """获取一个视频"""
         return self._video_db.get(video_hash, None)
 
+    def update_video(self, video: Video):
+        """更新处理后的视频"""
+        self._video_db[video.hash] = video
+
     def clear(self):
         """清空临时数据库"""
         self._video_db = {}
