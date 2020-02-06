@@ -1,4 +1,4 @@
-<p align="center"><img src="http://img03.sogoucdn.com/app/a/100520146/798A9149A43079106F96F2AE7F314779" width="200"></p>
+<p align="center"><img src="https://ae01.alicdn.com/kf/U150c6f229b47468781c941fdd80545eak.png" width="200"></p>
 <h3 align="center">- AnimeSearcher -</h3>
  
 # 简介  
@@ -16,11 +16,11 @@
 
 # 演示
 
-![index.png](http://img03.sogoucdn.com/app/a/100520146/332EEC17EBAAE98F698BA8822A36CC39)
+![index.png](https://ae01.alicdn.com/kf/U34b0554a6fe34130b3dd63fa1219d8ccF.png)
 
-![search.png](http://img04.sogoucdn.com/app/a/100520146/38D1C370026C5B3E0C44C9ACCAFE192D)
+![search.png](https://ae01.alicdn.com/kf/Uae60f959a38b4ab48bfefcbfccf79da9D.png)
 
-![player.png](http://img01.sogoucdn.com/app/a/100520146/22BD2AEA7D16A0045465AB2C0AD38D82)
+![player.png](https://ae01.alicdn.com/kf/U7f5d5f92ac3b42e1981889c6bf47d4cfm.png)
 
 # 下载和使用
 
