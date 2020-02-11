@@ -17,9 +17,37 @@ function getVideos(animeName) {
     return false;   // 禁止表单跳转
 }
 
-function playVideo(video_hash) {
+function showDanmakuList(list_hash) {
+    console.log(list_hash);
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "/danmaku_list/" + list_hash,
+        success: function (ret) {
+            document.getElementById("danmaku_list").innerHTML = ret;
+        }
+    });
+}
+
+let player = null;
+
+function playVideo(video_hash, danmaku_cid = 0) {
     let video_type = 'auto';
     let dialog = document.getElementById("video_loading");
+
+    if (video_hash == null) {
+        video_hash = $("#player").attr("now_play");
+    } else {
+        $("#player").attr("now_play", video_hash);
+        $("#search_danmaku").show();
+    }
+
+    // 切换视频前先销毁，否则弹幕无法正常加载
+    if (player) {
+        player.destroy();
+    }
+
+    // 显示加载框
     if (!dialog.showModal) {
         dialogPolyfill.registerDialog(dialog);
     }
@@ -35,32 +63,45 @@ function playVideo(video_hash) {
         }
     });
 
-    const player = new DPlayer({
+
+    console.log("加载弹幕 cid: " + danmaku_cid);
+    player = new DPlayer({
         container: document.getElementById('player'),
         screenshot: true,
         preload: true,
         autoplay: true,
-        audio: 100,
         video: {
             'url': '/video/' + video_hash + '/data',
             'type': video_type
+        },
+        danmaku: {
+            id: danmaku_cid,
+            api: '/video/danmaku/'
         }
     });
 
+
+    // 加载成功关闭加载框
     player.on("loadeddata", function () {
         console.log("视频加载成功~");
         dialog.close();
     });
 
+    player.on("destroy", function () {
+        console.log("播放器销毁");
+    });
+
+    // 某些格式视频无法播放，此时显示映射的 URL
     player.on("error", function () {
-        console.log("视频加载失败 :(");
-        prompt("网页端无法播放该视频，请尝试离线播放(或使用支持 URL 播放的本地播放器播放), 视频格式: " + video_type,
-            "http://127.0.0.1:5000/video/" + video_hash + "/data");
-        dialog.close();
-    })
-
-
+        if (player.video.error) {   // DPlayer Bug,destroy 事件会重复触发 error 事件
+            console.log("视频加载失败 :(");
+            prompt("网页端无法播放该视频，请尝试离线播放(或使用支持 URL 播放的本地播放器播放), 视频格式: " + video_type,
+                "http://127.0.0.1:5000/video/" + video_hash + "/data");
+            dialog.close();
+        }
+    });
 }
+
 
 // 关于页面
 function showAbout() {

@@ -60,7 +60,7 @@ class Engine(BaseEngine):
         if not ret:
             return None
         for video in ret:
-            video_list.add(video)
+            video_list.add_video(video)
         return video_list
 
     @staticmethod

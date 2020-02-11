@@ -32,7 +32,7 @@ class Engine(BaseEngine):
             logger.info(f"引擎 {__name__} 正在处理: {video_list.title}")
             for video in info['videoSets'][0]['list']:
                 name = f"第 {video['ji']} 集"
-                video_list.add(Video(name, raw_url=video['playid'], handler=PlayIdHandler))  # playid: xxx-x-x
+                video_list.add_video(Video(name, raw_url=video['playid'], handler=PlayIdHandler))  # playid: xxx-x-x
             result.append(video_list)
         return result
 

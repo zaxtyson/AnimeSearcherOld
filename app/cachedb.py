@@ -1,4 +1,4 @@
-from app.models import VideoList, Video
+from app.models import VideoList, Video, Danmaku
 
 
 class CacheDB(object):
@@ -15,7 +15,7 @@ class CacheDB(object):
             self._video_db.setdefault(video.hash, video)
 
     def get_video_list(self, list_hash) -> VideoList:
-        """获取一个视频列表"""
+        """获取一部番剧的信息"""
         return self._video_list_db.get(list_hash, None)
 
     def get_video(self, video_hash) -> Video:
@@ -25,6 +25,10 @@ class CacheDB(object):
     def update_video(self, video: Video):
         """更新处理后的视频"""
         self._video_db[video.hash] = video
+
+    def update_video_list(self, vl: VideoList):
+        """更新番剧信息"""
+        self._video_list_db[vl.hash] = vl
 
     def clear(self):
         """清空临时数据库"""

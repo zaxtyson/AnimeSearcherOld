@@ -1,7 +1,5 @@
-from requests.utils import urlparse
 import json
 import re
-from flask import Response
 from app.models import VideoList, Video, DefaultHandler, BaseEngine
 from app import logger
 
@@ -56,7 +54,7 @@ class Engine(BaseEngine):
                 handler = None
                 if 'bilibili' in url:
                     handler = BilibiliHandler
-                video_list.add(Video(name, url, handler))
+                video_list.add_video(Video(name, url, handler))
             if not is_rubbish_flag:
                 result.append(video_list)
         return result

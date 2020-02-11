@@ -1,0 +1,36 @@
+{% if max_num == 0 %}
+    <div style="text-align: center">
+        <p>
+            未搜索到匹配的弹幕库 (/▽＼)
+        </p>
+    </div>
+{% else %}
+    <div style="overflow-x: auto">
+        <table class="mdl-data-table mdl-js-data-table mdl-shadow--4dp">
+            <thead>
+            <tr style="background-color: #525252;color: white;font-size: medium">
+                <td>弹幕库名称</td>
+                <td>集数</td>
+                {% for i in range(max_num) %}
+                    <td>第 {{ i + 1 }} 集</td>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody title="点击加载弹幕~">
+            {% for dmk in dmk_list %}
+                <tr>
+                    <td>{{ dmk.title }}</td>
+                    <td>{{ dmk.num }} 集</td>
+                    {% for ep in dmk.danmaku %}
+                        <td>
+                            <button class="mdl-button mdl-js-ripple-effect mdl-button--accent"
+                                    onclick="playVideo(null, {{ ep.cid }})">{{ ep.name }}
+                            </button>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}

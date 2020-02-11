@@ -29,6 +29,22 @@ class Video(object):
         }
 
 
+class Danmaku(object):
+    """一部番的弹幕库"""
+    def __init__(self, title):
+        self.title = title
+        self.num = 0    # 弹幕库包含的视频集数
+        self.danmaku = []   # 每一集弹幕信息 {'name': xxx, 'cid'； 1234}
+
+    def __repr__(self):
+        return f'<Danmaku {self.title}>'
+
+    def add(self, name: str, cid: int):
+        """添加某一集的弹幕信息"""
+        self.danmaku.append({'name': name, 'cid': cid})
+        self.num = len(self.danmaku)
+
+
 class VideoList(object):
     """视频列表对象(一部动漫)"""
 
@@ -41,16 +57,21 @@ class VideoList(object):
         self.videos = []  # 包含的 Video 对象列表
         self.num = 0  # 视频集数
         self.engine = ''  # 调用的引擎名
+        self.danmaku_list = []  # 匹配的弹幕库
 
     def __repr__(self):
         return f'<VideoList {self.title}>'
 
-    def add(self, video: Video):
+    def add_video(self, video: Video):
         """添加一个 Video 对象"""
         self.videos.append(video)
         self.num += 1
         _all_hash = ''.join([v.hash for v in self.videos])
         self.hash = md5(_all_hash.encode('utf-8')).hexdigest()  # 通过所有 Video 对象的 hash 计算 VideoList 的 hash
+
+    def add_danmaku(self, danmaku: Danmaku):
+        """添加一个 Danmaku"""
+        self.danmaku_list.append(danmaku)
 
     def json(self):
         """VideoList 对象转 json"""
