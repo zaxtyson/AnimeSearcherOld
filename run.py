@@ -1,3 +1,8 @@
 from app import app
+from webbrowser import open
 
-app.run(host='127.0.0.1', debug=False)
+HOST = "127.0.0.1"
+PORT = 5000
+
+open(f"http://{HOST}:{PORT}")
+app.run(host=HOST, port=PORT, debug=True)

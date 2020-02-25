@@ -54,7 +54,7 @@ class VideoList(object):
         self.cat = cat or []  # 分类
         self.desc = desc  # 描述
         self.hash = ''  # 用作数据库的 key
-        self.videos = []  # 包含的 Video 对象列表
+        self._videos = []  # 包含的 Video 对象列表
         self.num = 0  # 视频集数
         self.engine = ''  # 调用的引擎名
         self.danmaku_list = []  # 匹配的弹幕库
@@ -62,11 +62,14 @@ class VideoList(object):
     def __repr__(self):
         return f'<VideoList {self.title}>'
 
+    def __iter__(self):
+        return iter(self._videos)
+
     def add_video(self, video: Video):
         """添加一个 Video 对象"""
-        self.videos.append(video)
+        self._videos.append(video)
         self.num += 1
-        _all_hash = ''.join([v.hash for v in self.videos])
+        _all_hash = ''.join([v.hash for v in self._videos])
         self.hash = md5(_all_hash.encode('utf-8')).hexdigest()  # 通过所有 Video 对象的 hash 计算 VideoList 的 hash
 
     def add_danmaku(self, danmaku: Danmaku):
@@ -83,7 +86,7 @@ class VideoList(object):
             'hash': self.hash,
             'num': self.num,
             'engine': self.engine,
-            'videos': [v.json() for v in self.videos]
+            'videos': [v.json() for v in self._videos]
         }
 
 

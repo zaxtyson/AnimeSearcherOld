@@ -13,7 +13,6 @@ def index():
 def search(name):
     logger.info(f"搜索 : {name}")
     result = Searcher.search(name)
-    # cachedb.clear()  # 每次搜索前清空临时数据库
     result_json = []
     for video_list in result:
         cachedb.add_video_list(video_list)  # 保存结果到临时数据库
@@ -28,7 +27,7 @@ def get_playlist(list_hash):
     if not video_list:
         return '番剧列表不存在'
     logger.info(f"获取番剧列表: {video_list.title} (共{video_list.num}集) {video_list.hash}")
-    return render_template('playlist.html', video_list=video_list.videos, list_hash=list_hash)
+    return render_template('playlist.html', video_list=video_list, list_hash=list_hash)
 
 
 @app.route('/danmaku_list/<list_hash>')

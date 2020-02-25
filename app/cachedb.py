@@ -11,7 +11,7 @@ class CacheDB(object):
     def add_video_list(self, video_list: VideoList):
         """存入一个视频列表"""
         self._video_list_db.setdefault(video_list.hash, video_list)
-        for video in video_list.videos:
+        for video in video_list:
             self._video_db.setdefault(video.hash, video)
 
     def get_video_list(self, list_hash) -> VideoList:

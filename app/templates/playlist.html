@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div style="text-align: center">
+    <div style="max-width: 70%; margin: 0 auto; align-content: center">
         <dialog id="video_loading" class="mdl-dialog" style=" margin-top: 15%">
             <div class="mdl-dialog__content">
                 <span class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></span>
@@ -16,7 +16,7 @@
                 </button>
             {% endfor %}
         </div>
-        <div id="search_danmaku" style="display: none">
+        <div id="search_danmaku" style="display: none; text-align: center">
             <hr>
             <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
                     title="搜索弹幕库" onclick="showDanmakuList('{{ list_hash }}')">
