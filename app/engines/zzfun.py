@@ -11,8 +11,8 @@ class Engine(BaseEngine):
         """搜索接口2"""
         logger.info(f'引擎 {__name__} 正在搜索: {name}')
         result = []
-        search_api = 'http://111.230.89.165:8089/android/search'
-        info_api = 'http://111.230.89.165:8089/android/video/list_ios'
+        search_api = 'http://service-agbhuggw-1259251677.gz.apigw.tencentcs.com/android/search'
+        info_api = 'http://service-agbhuggw-1259251677.gz.apigw.tencentcs.com/android/video/list_ios'
 
         req = Engine.post(search_api, data={'userid': '', 'key': name})
         if req.status_code != 200 or req.json().get('errorCode') != 0:
