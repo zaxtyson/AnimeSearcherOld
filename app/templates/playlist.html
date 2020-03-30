@@ -7,7 +7,7 @@
                 <span style="margin-left: 20px"> 视频加载中(。・∀・)ノ</span>
             </div>
         </dialog>
-        <div id="player" now_play=""></div>
+        <div id="player"></div>
         <div>
             {% for video in video_list %}
                 <button type="button" class="mdl-chip mdl-button--raised mdl-button--accent"
@@ -16,10 +16,10 @@
                 </button>
             {% endfor %}
         </div>
-        <div id="search_danmaku" style="display: none; text-align: center">
+        <div id="search_danmaku_bt" style="display: none; text-align: center">
             <hr>
             <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
-                    title="搜索弹幕库" onclick="showDanmakuList('{{ list_hash }}')">
+                    title="搜索弹幕库" onclick="showDanmakuList()">
                 <i class="material-icons">search</i>
             </button>
             <div id="danmaku_list" style="margin-top: 30px"></div>

@@ -1,5 +1,5 @@
 from app import app, cachedb, logger
-from flask import render_template, request
+from flask import render_template, request, make_response
 from app.searcher import Searcher
 from app.danmaku import BiliBiliDanmaku
 
@@ -27,7 +27,9 @@ def get_playlist(list_hash):
     if not video_list:
         return '番剧列表不存在'
     logger.info(f"获取番剧列表: {video_list.title} (共{video_list.num}集) {video_list.hash}")
-    return render_template('playlist.html', video_list=video_list, list_hash=list_hash)
+    resp = make_response(render_template('playlist.html', video_list=video_list))
+    resp.set_cookie('video_list', list_hash)
+    return resp
 
 
 @app.route('/danmaku_list/<list_hash>')
@@ -76,10 +78,4 @@ def get_video_data(video_hash):
 def get_video_danmaku():
     """尝试从哔哩哔哩获取视频弹幕"""
     cid = request.args.get('id')
-    t = BiliBiliDanmaku.get_danmaku(int(cid))
-    return t
-
-
-@app.route('/test')
-def test():
-    return render_template('test.html')
+    return BiliBiliDanmaku.get_danmaku(int(cid))

@@ -17,29 +17,29 @@ function getVideos(animeName) {
     return false;   // 禁止表单跳转
 }
 
-function showDanmakuList(list_hash) {
-    console.log(list_hash);
+// 点开某集视频后再显示弹幕搜索按钮
+function showDanmakuList() {
     $.ajax({
         type: "GET",
         async: false,
-        url: "/danmaku_list/" + list_hash,
+        url: "/danmaku_list/" + $.cookie("video_list"),
         success: function (ret) {
             document.getElementById("danmaku_list").innerHTML = ret;
         }
     });
 }
 
-let player = null;
+let player = null;  // 全局播放器对象
 
 function playVideo(video_hash, danmaku_cid = 0) {
     let video_type = 'auto';
     let dialog = document.getElementById("video_loading");
 
-    if (video_hash == null) {
-        video_hash = $("#player").attr("now_play");
+    if (video_hash != null) {
+        $.cookie("playing", video_hash);    // 保存当前视频 hash, 加载弹幕需要重新创建播放器
+        $("#search_danmaku_bt").show();
     } else {
-        $("#player").attr("now_play", video_hash);
-        $("#search_danmaku").show();
+        video_hash = $.cookie("playing");   // 仅提供弹幕 cid 播放视频
     }
 
     // 切换视频前先销毁，否则弹幕无法正常加载

@@ -23,4 +23,4 @@ disable_warnings(InsecureRequestWarning)  # 禁用日志输出SSL警告
 
 logger = app.logger
 
-from app import app, routes
+from app import app

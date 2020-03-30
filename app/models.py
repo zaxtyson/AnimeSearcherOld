@@ -126,6 +126,7 @@ class BaseEngine(object):
         if not html:
             return None
         try:
+            import lxml
             return etree.HTML(html).xpath(xpath)
         except etree.XPathError:
             return None

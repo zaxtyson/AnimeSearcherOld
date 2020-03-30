@@ -31,15 +31,17 @@ class BiliBiliDanmaku(object):
         data = BiliBiliDanmaku._search(params)[:3]  # 只要前 3 个番剧的数据
         for item in data:
             title = item['title'].replace(r'<em class="keyword">', '').replace('</em>', '')  # 番剧名
-            first_ep_url = item['eps'][0]['url']
+            try:
+                first_ep_url = item['eps'][0]['url']
+            except IndexError:
+                continue
             req = requests.get(first_ep_url)
             if req.status_code != 200:
                 continue
-            ep_list = re.findall(r'"epList":(\[.+?\]),', req.text, re.M)
-            ep_list = loads(ep_list[0])
+            ep_list = re.findall(r',"cid":(\d{5,}).+?titleFormat":"(.+?)",', req.text, re.M)
             dmk = Danmaku(title)
-            for ep in ep_list:
-                dmk.add(ep['titleFormat'], int(ep['cid']))
+            for cid, title in ep_list:
+                dmk.add(title, int(cid))
             result.append(dmk)
         return result
 
@@ -101,17 +103,3 @@ class BiliBiliDanmaku(object):
         dm_list = re.findall(r'p="(\d+\.?\d*?),\d,\d\d,(\d+?),\d+,(\d),.+?>(.+?)</d>', req.text)
         result['data'] = [[float(dm[0]), int(dm[2]), int(dm[1]), "", dm[3]] for dm in dm_list]
         return result
-
-
-if __name__ == '__main__':
-    info = BiliBiliDanmaku.search_danmaku("无限斯特拉托斯")
-    for i in info:
-        print(i)
-    #
-    # r = Danmaku.get_info_from_official("无限斯特拉托斯")
-    # for k, v in r.items():
-    #     print(k, v)
-
-    # dm = Danmaku.get_danmaku(130657281)
-    # for i in dm['data']:
-    #     print(i)
