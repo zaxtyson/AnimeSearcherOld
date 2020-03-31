@@ -42,7 +42,7 @@ class PlayIdHandler(DefaultHandler):
     def get_real_url(self):
         """通过视频的 play_id 获取视频链接"""
         logger.info(f"PlayIdHandler 正在处理: {self.raw_url}")
-        play_api = 'http://111.230.89.165:8089/android/video/play'
+        play_api = 'http://service-agbhuggw-1259251677.gz.apigw.tencentcs.com/android/video/play'
         play_id = self.raw_url
         secret_key = '534697'  # 这个值无法通过抓包得到,而是从客户端逆向出来的
         sing = md5((play_id + secret_key).encode('utf-8')).hexdigest()
