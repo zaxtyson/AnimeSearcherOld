@@ -2,6 +2,7 @@ import requests
 from hashlib import md5
 from app.models import VideoList, Video, DefaultHandler, BaseEngine
 from app import logger
+from time import time
 
 
 class Engine(BaseEngine):
@@ -42,11 +43,13 @@ class PlayIdHandler(DefaultHandler):
     def get_real_url(self):
         """通过视频的 play_id 获取视频链接"""
         logger.info(f"PlayIdHandler 正在处理: {self.raw_url}")
-        play_api = 'http://service-agbhuggw-1259251677.gz.apigw.tencentcs.com/android/video/play'
+        play_api = 'http://service-agbhuggw-1259251677.gz.apigw.tencentcs.com/android/video/newplay'
         play_id = self.raw_url
-        secret_key = '534697'  # 这个值无法通过抓包得到,而是从客户端逆向出来的
-        sing = md5((play_id + secret_key).encode('utf-8')).hexdigest()
-        payload = {'playid': play_id, 'userid': '', 'apptoken': '', 'sing': sing}
+        secret_key = 'zandroidzz'  # 这个值无法通过抓包得到,而是从客户端逆向出来的
+        now = int(time()*1000)    # 13 位时间戳
+        sign = f"{secret_key}{now}"
+        sing = md5(sign.encode('utf-8')).hexdigest()
+        payload = {'playid': play_id, 'userid': '', 'apptoken': '', 'sing': sing, 'map': now}
         req = requests.post(play_api, data=payload)
         if req.status_code != 200 or req.json().get('errorCode') != 0:
             return ''
