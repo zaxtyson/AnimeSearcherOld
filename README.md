@@ -1,5 +1,7 @@
 <p align="center"><img src="https://ae01.alicdn.com/kf/U150c6f229b47468781c941fdd80545eak.png" width="200"></p>
 <h3 align="center">- AnimeSearcher -</h3>
+
+# 本项目不再继续维护, 转到 [AnimeSearcher](https://github.com/zaxtyson/AnimeSearcher)
  
 # 简介  
 - 这是一款动漫搜索工具，基于 Flask + DPlayer  
